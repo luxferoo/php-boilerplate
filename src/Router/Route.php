@@ -9,7 +9,7 @@ class Route
     private $matches = [];
     private $params = [];
 
-    public function __construct(String $path, \Closure $callback)
+    public function __construct(String $path, $callback)
     {
         $this->path = trim($path, '/');
         $this->callback = $callback;
@@ -31,6 +31,13 @@ class Route
 
     public function call()
     {
+        if (is_string($this->callback)) {
+            $params = explode('#', $this->callback);
+            $controller = "App\\Controller\\" . $params[0];
+            $controller = new $controller();
+            $action = $params[1];
+            $controller->$action(...$this->matches);
+        }
         return call_user_func_array($this->callback, $this->matches);
     }
 
@@ -46,5 +53,23 @@ class Route
             return '(' . $this->params[$match[1]] . ')';
         }
         return '([^/]+)';
+    }
+
+    public function getUrl(array $params = []): string
+    {
+        $path = $this->path;
+        foreach ($params as $k => $v) {
+            $path = str_replace(":$k", $v, $path);
+        }
+        return $path;
+    }
+
+    public function getMatches(){
+        return $this->matches;
+    }
+
+    public function setMatches(array $matches){
+        $this->matches = $matches;
+        return $this;
     }
 }

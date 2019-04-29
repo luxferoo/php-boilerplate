@@ -4,7 +4,7 @@ require '../vendor/autoload.php';
 
 use App\Router\Router;
 
-$router = new Router();
+$router = Router::getInstance();
 
 $url = $_SERVER['PATH_INFO'] ?: "";
 $method = $_SERVER['REQUEST_METHOD'];
@@ -12,6 +12,11 @@ $method = $_SERVER['REQUEST_METHOD'];
 if (!isset($method)) {
 
 } else {
+    $router->addProxy(function (String $url, array &$params = []) {
+        $params[0] = 54345;
+        $_GET['imam'] = "non";
+    });
+
     $router->get('/', function () {
         echo "home";
     });
@@ -20,15 +25,13 @@ if (!isset($method)) {
         echo "all books";
     });
 
-    $router->get('/books/:id-:slug', function ($id, $slug) {
-        echo $slug . " " . $id;
-    })
+    $router->get('/books/:id-:slug', function ($id, $slug) use ($router) {
+        echo $id . ' ' . $slug;
+    }, 'show_book')
         ->constraint('id', '[0-9]+')
         ->constraint('slug', '[a-z\-0-9]+');
 
-    $router->get('/books/:id', function ($id) {
-        echo $id;
-    });
+    $router->get('/books/:id', "Book#show");
 
     $router->get('/books/:id/author/dogs/:dog', function ($id, $dog) {
         echo "author for " . $id . " " . $dog;
