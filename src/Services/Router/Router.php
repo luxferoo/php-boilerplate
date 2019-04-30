@@ -178,4 +178,15 @@ class Router implements EventEmitter
         unset($this->eventsOnce[$event]);
         return $this;
     }
+
+    public function detachAll(String $event): self
+    {
+        foreach ($this->events as &$ev) {
+            foreach ($ev as $k => $cb) {
+                unset($ev[$k]);
+            }
+        }
+        unset($this->eventsOnce[$event]);
+        return $this;
+    }
 }
