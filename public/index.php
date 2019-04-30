@@ -4,9 +4,10 @@ require '../vendor/autoload.php';
 require './initIoC.php';
 
 use App\IOC\IoC;
+use App\Services\Router\Router;
 
 $container = IoC::getInstance();
-/** @var \App\Router\Router $router */
+/** @var \App\Services\Router\Router $router */
 $router = $container->getService("router");
 
 $url = $_SERVER['PATH_INFO'] ?: "";
@@ -43,6 +44,20 @@ if (!isset($method)) {
         echo $id;
     });
 
+    $router
+        ->on(Router::ROUTER_REQUEST_EVENT, function ($args) {
+        })
+        ->on(Router::ROUTER_REQUEST_ERROR_EVENT, function ($args) {
+            echo $args[0] . PHP_EOL;
+            echo $args[1] . PHP_EOL;
+            echo $args[2] . PHP_EOL;
+        })
+        ->on(Router::ROUTER_RESPONSE_EVENT, function ($args) {
+            echo $args[0];
+        })
+        ->on(Router::ROUTER_RESPONSE_ERROR_EVENT, function ($args) {
+            echo $args[0];
+        });
     try {
         $router->run($url, $method);
     } catch (Exception $exception) {

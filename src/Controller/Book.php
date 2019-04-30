@@ -2,15 +2,17 @@
 
 namespace App\Controller;
 
-use App\Router\Router;
+use App\Services\Router\Router;
 use App\IOC\IoC;
 
 class Book
 {
-    public function show(int $id)
+    use Controller;
+
+    public function show(int $id): String
     {
         /** @var Router $router */
-        $router = IoC::getInstance()->getService("router");
-        echo $router->url('show_book', ['id' => 1, 'slug' => 'my-book']) . PHP_EOL;
+        $router = $this->getService("router");
+        return $this->json(["url" => $router->url('show_book', ['id' => 1, 'slug' => 'my-book']), "id" => $id]);
     }
 }

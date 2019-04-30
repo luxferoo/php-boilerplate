@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Router;
+namespace App\Services\Router;
 
 class Route
 {
@@ -36,7 +36,7 @@ class Route
             $controller = "App\\Controller\\" . $params[0];
             $controller = new $controller();
             $action = $params[1];
-            $controller->$action(...$this->matches);
+            return $controller->$action(...$this->matches);
         }
         return call_user_func_array($this->callback, $this->matches);
     }
