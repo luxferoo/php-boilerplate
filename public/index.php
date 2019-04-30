@@ -45,8 +45,6 @@ if (!isset($method)) {
     });
 
     $router
-        ->on(Router::ROUTER_REQUEST_EVENT, function ($args) {
-        })
         ->on(Router::ROUTER_REQUEST_ERROR_EVENT, function ($args) {
             echo $args[0] . PHP_EOL;
             echo $args[1] . PHP_EOL;
