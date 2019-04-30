@@ -13,9 +13,7 @@ class Router
     const PUT = "PUT";
     const DELETE = "DELETE";
 
-    private function __construct()
-    {
-    }
+    private function __construct(){}
 
     public static function getInstance()
     {
@@ -88,5 +86,9 @@ class Router
     {
         $this->proxies[] = $callback;
         return $this;
+    }
+
+    public function getRoutes(){
+        return $this->routes;
     }
 }

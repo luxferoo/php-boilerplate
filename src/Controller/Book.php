@@ -3,14 +3,14 @@
 namespace App\Controller;
 
 use App\Router\Router;
+use App\IOC\IoC;
 
 class Book
 {
     public function show(int $id)
     {
-        $router = Router::getInstance();
-        echo $_GET['imam'] . PHP_EOL;
+        /** @var Router $router */
+        $router = IoC::getInstance()->getService("router");
         echo $router->url('show_book', ['id' => 1, 'slug' => 'my-book']) . PHP_EOL;
-        echo $id;
     }
 }

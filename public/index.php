@@ -1,10 +1,13 @@
 <?php
 
 require '../vendor/autoload.php';
+require './initIoC.php';
 
-use App\Router\Router;
+use App\IOC\IoC;
 
-$router = Router::getInstance();
+$container = IoC::getInstance();
+/** @var \App\Router\Router $router */
+$router = $container->getService("router");
 
 $url = $_SERVER['PATH_INFO'] ?: "";
 $method = $_SERVER['REQUEST_METHOD'];
@@ -14,7 +17,6 @@ if (!isset($method)) {
 } else {
     $router->addProxy(function (String $url, array &$params = []) {
         $params[0] = 54345;
-        $_GET['imam'] = "non";
     });
 
     $router->get('/', function () {
