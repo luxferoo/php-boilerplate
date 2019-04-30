@@ -168,11 +168,14 @@ class Router implements EventEmitter
 
     public function detach(String $event, \Closure $callback): self
     {
-        return $this;
-    }
-
-    public function detachOnce(String $event, \Closure $callback): self
-    {
+        foreach ($this->events as &$ev) {
+            foreach ($ev as $k => $cb) {
+                if ($callback == array_values($cb)[0]) {
+                    unset($ev[$k]);
+                }
+            }
+        }
+        unset($this->eventsOnce[$event]);
         return $this;
     }
 }

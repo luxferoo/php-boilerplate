@@ -30,7 +30,14 @@ interface EventEmitter
      */
     public function emit(String $event, ...$args);
 
+    /**
+     * Detaches a callback from an event
+     * @param String $event
+     * @param \Closure $callback
+     * @return
+     * @internal param $args
+     * @internal param \Closure $callback
+     * @internal param $args
+     */
     public function detach(String $event, \Closure $callback);
-
-    public function detachOnce(String $event, \Closure $callback);
 }

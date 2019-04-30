@@ -1,5 +1,5 @@
 <?php
-
+ini_set('display_errors', 1);
 require '../vendor/autoload.php';
 require './initIoC.php';
 
@@ -10,8 +10,8 @@ $container = IoC::getInstance();
 /** @var \App\Services\Router\Router $router */
 $router = $container->getService("router");
 
-$url = $_SERVER['PATH_INFO'] ?: "";
-$method = $_SERVER['REQUEST_METHOD'];
+$url = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : "";
+$method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : null;
 
 if (!isset($method)) {
 
