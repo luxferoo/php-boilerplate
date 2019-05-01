@@ -24,7 +24,7 @@ interface EventEmitter
     /**
      * Emits an event
      * @param String $event
-     * @param $args
+     * @param mixed ...$args
      * @internal param \Closure $callback
      * @internal param $args
      */

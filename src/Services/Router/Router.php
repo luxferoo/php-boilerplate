@@ -38,22 +38,23 @@ class Router implements EventEmitter
     public function run(String $url, String $method)
     {
         $this->emit(self::ROUTER_REQUEST_EVENT, $url, $method);
-
-        /** @var Route $route */
-        foreach ($this->routes[$method] as $route) {
-            if ($route->match($url)) {
-                $matches = $route->getMatches();
-                foreach ($this->proxies as $proxy) {
-                    $proxy($url, $matches);
-                }
-                $route->setMatches($matches);
-                try {
-                    $result = $route->call();
-                    $this->emit(self::ROUTER_RESPONSE_EVENT, $result, $url, $method);
-                    return $result;
-                } catch (\Exception $exception) {
-                    $this->emit(self::ROUTER_RESPONSE_ERROR_EVENT, $exception->getMessage(), $url, $method);
-                    return null;
+        if (isset($this->routes[$method])) {
+            /** @var Route $route */
+            foreach ($this->routes[$method] as $route) {
+                if ($route->match($url)) {
+                    $matches = $route->getMatches();
+                    foreach ($this->proxies as $proxy) {
+                        $proxy($url, $matches);
+                    }
+                    $route->setMatches($matches);
+                    try {
+                        $result = $route->call();
+                        $this->emit(self::ROUTER_RESPONSE_EVENT, $result, $url, $method);
+                        return $result;
+                    } catch (\Exception $exception) {
+                        $this->emit(self::ROUTER_RESPONSE_ERROR_EVENT, $exception->getMessage(), $url, $method);
+                        return null;
+                    }
                 }
             }
         }
