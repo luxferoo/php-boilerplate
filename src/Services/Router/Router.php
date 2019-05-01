@@ -4,20 +4,20 @@ namespace App\Services\Router;
 
 use App\Helpers\EventEmitter;
 
-class Router implements EventEmitter
+class Router extends EventEmitter
 {
     private $routes = [];
     private $namedRoutes = [];
     private $proxies = [];
-    private $events = [];
-    private $eventsOnce = [];
+    private $response;
+    private $url;
     private static $instance;
     const GET = "GET";
     const POST = "POST";
     const PUT = "PUT";
     const DELETE = "DELETE";
     const ROUTER_REQUEST_EVENT = "router.request";
-    const ROUTER_REQUEST_ERROR_EVENT = "router.request.error";
+    const ROUTER_ROUTE_NOT_FOUND_EVENT = "router.route.not.found";
     const ROUTER_RESPONSE_EVENT = "router.response";
     const ROUTER_RESPONSE_ERROR_EVENT = "router.response.error";
 
@@ -37,7 +37,9 @@ class Router implements EventEmitter
 
     public function run(String $url, String $method)
     {
-        $this->emit(self::ROUTER_REQUEST_EVENT, $url, $method);
+        $this->url = $url;
+        $this->response = null;
+        $this->emit(self::ROUTER_REQUEST_EVENT, $this);
         if (isset($this->routes[$method])) {
             /** @var Route $route */
             foreach ($this->routes[$method] as $route) {
@@ -48,18 +50,17 @@ class Router implements EventEmitter
                     }
                     $route->setMatches($matches);
                     try {
-                        $result = $route->call();
-                        $this->emit(self::ROUTER_RESPONSE_EVENT, $result, $url, $method);
-                        return $result;
+                        $this->response = $route->call();
+                        $this->emit(self::ROUTER_RESPONSE_EVENT, $this);
+                        return;
                     } catch (\Exception $exception) {
-                        $this->emit(self::ROUTER_RESPONSE_ERROR_EVENT, $exception->getMessage(), $url, $method);
-                        return null;
+                        $this->emit(self::ROUTER_RESPONSE_ERROR_EVENT, $this);
+                        return;
                     }
                 }
             }
         }
-        $this->emit(self::ROUTER_REQUEST_ERROR_EVENT, "Oups! Route not found : $url", $url, $method);
-        //throw new RouterException("Oups! Route not found : $url", 404);
+        $this->emit(self::ROUTER_ROUTE_NOT_FOUND_EVENT, $this);
     }
 
     public function get(String $path, $callback, String $name = null): Route
@@ -87,7 +88,7 @@ class Router implements EventEmitter
         $route = new Route($path, $callback);
         $this->routes[$method][] = $route;
         if (is_string($callback) && $name == null) {
-            $this->namedRoutes[$name] = $callback;
+            $this->namedRoutes[$callback] = $callback;
         }
         if ($name) {
             $this->namedRoutes[$name] = $route;
@@ -95,7 +96,7 @@ class Router implements EventEmitter
         return $route;
     }
 
-    public function url(String $name, array $params = [])
+    public function getUrl(String $name, array $params = [])
     {
         if (!isset($this->namedRoutes[$name])) {
             throw new RouterException('No route matches this name');
@@ -114,80 +115,13 @@ class Router implements EventEmitter
         return $this->routes;
     }
 
-    /**
-     * Executes a callback on an emitted event
-     * @param String $event
-     * @param \Closure $callback
-     * @param int $priority
-     * @return mixed
-     */
-    public function on(String $event, \Closure $callback, int $priority = 0): self
+    public function getRequestedUrl()
     {
-        $this->events[$event][] = [$priority => $callback];
-        return $this;
+        return $this->url;
     }
 
-    /**
-     * Executes a callback on an emitted event and only once
-     * @param String $event
-     * @param \Closure $callback
-     * @return mixed
-     */
-    public function once(String $event, \Closure $callback): self
+    public function getResponse()
     {
-        if (!isset($this->eventsOnce[$event])) {
-            $this->eventsOnce[$event] = $callback;
-        }
-        return $this;
-    }
-
-    /**
-     * Emits an event
-     * @param String $event
-     * @param $args
-     * @internal param \Closure $callback
-     * @internal param $args
-     */
-    public function emit(String $event, ...$args): void
-    {
-        if (isset($this->eventsOnce[$event])) {
-            $this->eventsOnce[$event]($args);
-            return;
-        }
-        if (isset($this->events[$event])) {
-            $events = $this->events[$event];
-            uasort($events, function ($a, $b) {
-                return array_keys($a)[0] < array_keys($b)[0];
-            });
-            foreach ($events as $callbacks) {
-                foreach ($callbacks as $k => $callback) {
-                    $callback($args);
-                }
-            }
-        }
-    }
-
-    public function detach(String $event, \Closure $callback): self
-    {
-        foreach ($this->events as &$ev) {
-            foreach ($ev as $k => $cb) {
-                if ($callback == array_values($cb)[0]) {
-                    unset($ev[$k]);
-                }
-            }
-        }
-        unset($this->eventsOnce[$event]);
-        return $this;
-    }
-
-    public function detachAll(String $event): self
-    {
-        foreach ($this->events as &$ev) {
-            foreach ($ev as $k => $cb) {
-                unset($ev[$k]);
-            }
-        }
-        unset($this->eventsOnce[$event]);
-        return $this;
+        return $this->response;
     }
 }
