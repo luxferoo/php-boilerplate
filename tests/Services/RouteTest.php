@@ -38,9 +38,16 @@ class RouteTest extends TestCase
 
     public function testGetUrl()
     {
-        $this->assertSame(self::$route->getUrl(["id" => 1, "slug" => "my-book"]),"books/my-book-1");
+        $this->assertSame(self::$route->getUrl(["id" => 1, "slug" => "my-book"]), "books/my-book-1");
     }
 
-    //TODO Continue implementing tests
+    public function testCall()
+    {
+        $this->assertSame("my-book 1",self::$route->call());
+    }
 
+    public function testGetMatches()
+    {
+        $this->assertSame(self::$route->getMatches(),["my-book","1"]);
+    }
 }

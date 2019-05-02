@@ -13,7 +13,7 @@ class EventEmitter
      * @param String $event
      * @param \Closure $callback
      * @param int $priority
-     * @return mixed
+     * @return EventEmitter
      */
     public function on(String $event, \Closure $callback, int $priority = 0): self
     {
@@ -25,7 +25,7 @@ class EventEmitter
      * Executes a callback on an emitted event and only once
      * @param String $event
      * @param \Closure $callback
-     * @return mixed
+     * @return EventEmitter
      */
     public function once(String $event, \Closure $callback): self
     {
@@ -61,6 +61,15 @@ class EventEmitter
         }
     }
 
+    /**
+     * Detaches a callback from an event
+     * @param String $event
+     * @param \Closure $callback
+     * @return EventEmitter
+     * @internal param $args
+     * @internal param \Closure $callback
+     * @internal param $args
+     */
     public function detach(String $event, \Closure $callback): self
     {
         foreach ($this->events as &$ev) {
@@ -74,6 +83,15 @@ class EventEmitter
         return $this;
     }
 
+    /**
+     * Detaches all callbacks from an event
+     * @param String $event
+     * @return EventEmitter
+     * @internal param \Closure $callback
+     * @internal param $args
+     * @internal param \Closure $callback
+     * @internal param $args
+     */
     public function detachAll(String $event): self
     {
         foreach ($this->events as &$ev) {
