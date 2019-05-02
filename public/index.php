@@ -18,20 +18,17 @@ $method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : null;
 if (!isset($method)) {
 
 } else {
-    $router->addProxy(function (String $url, array &$params = []) {
-
-    });
-
+    /* books */
     $router->get('/', function () {
-        echo "home";
+        return "home";
     });
 
     $router->get('/books', function () {
-        echo "all books";
+        return "all books";
     });
 
     $router->get('/books/:id-:slug', function ($id, $slug) use ($router) {
-        echo $id . ' ' . $slug;
+        return $id . ' ' . $slug;
     }, 'show.book')
         ->constraint('id', '[0-9]+')
         ->constraint('slug', '[a-z\-0-9]+');
@@ -39,12 +36,13 @@ if (!isset($method)) {
     $router->get('/books/:id', "Book#show");
 
     $router->get('/books/:id/author/dogs/:dog', function ($id, $dog) {
-        echo "author for " . $id . " " . $dog;
+        return "author for " . $id . " " . $dog;
     });
 
     $router->post('/books/:id', function ($id) {
-        echo $id;
+        return $id;
     });
+    /* books */
 
     try {
         $router->run($url, $method);

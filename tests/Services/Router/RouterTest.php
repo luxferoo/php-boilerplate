@@ -4,6 +4,7 @@ namespace tests\Services\Router;
 
 use App\Services\Router\Route;
 use App\Services\Router\Router;
+use App\Services\Router\RouterException;
 use PHPUnit\Framework\TestCase;
 
 class RouterTest extends TestCase
@@ -20,10 +21,9 @@ class RouterTest extends TestCase
 
     public function testGet()
     {
-        /** @var Route $route */
         self::$router->get("/books", function () {
-            echo "list of books";
-        }, "list_books");
+            return "list of books";
+        }, "books_list");
 
         $this->assertTrue(array_key_exists(Router::GET, self::$router->getRoutes()));
         $this->assertTrue(self::$router->getRoutes()[Router::GET][0] instanceof Route);
@@ -31,9 +31,8 @@ class RouterTest extends TestCase
 
     public function testPost()
     {
-        /** @var Route $route */
         self::$router->post("/books", function () {
-        }, "list_books");
+        }, "post_book");
 
         $this->assertTrue(array_key_exists(Router::POST, self::$router->getRoutes()));
         $this->assertTrue(self::$router->getRoutes()[Router::POST][0] instanceof Route);
@@ -41,9 +40,8 @@ class RouterTest extends TestCase
 
     public function testPut()
     {
-        /** @var Route $route */
         self::$router->put("/books/:id", function () {
-        }, "list_books");
+        }, "put_book");
 
         $this->assertTrue(array_key_exists(Router::PUT, self::$router->getRoutes()));
         $this->assertTrue(self::$router->getRoutes()[Router::PUT][0] instanceof Route);
@@ -51,11 +49,32 @@ class RouterTest extends TestCase
 
     public function testDelete()
     {
-        /** @var Route $route */
         self::$router->delete("/books", function () {
-        }, "list_books");
+        }, "delete_book");
 
         $this->assertTrue(array_key_exists(Router::DELETE, self::$router->getRoutes()));
         $this->assertTrue(self::$router->getRoutes()[Router::DELETE][0] instanceof Route);
+    }
+
+    public function testUniqueRouteNameStringCallback()
+    {
+        $this->expectException(RouterException::class);
+        self::$router->get("/books1", "Book#list1");
+        self::$router->get("/books1", "Book#list1");
+    }
+
+    public function testUniqueRouteNameClosure()
+    {
+        $this->expectException(RouterException::class);
+        self::$router->get("/books2", function () {
+        }, "my_book_list_1");
+        self::$router->get("/books2", function () {
+        }, "my_book_list_1");
+    }
+
+    public function testGetRequestedUrl()
+    {
+        self::$router->run("/books", Router::GET);
+        $this->assertSame(self::$router->getRequestedUrl(), "/books");
     }
 }

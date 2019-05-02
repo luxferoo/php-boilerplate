@@ -88,9 +88,15 @@ class Router extends EventEmitter
         $route = new Route($path, $callback);
         $this->routes[$method][] = $route;
         if (is_string($callback) && $name == null) {
+            if (array_key_exists($callback, $this->namedRoutes)) {
+                throw new RouterException("Route name already taken $callback");
+            }
             $this->namedRoutes[$callback] = $callback;
         }
         if ($name) {
+            if (array_key_exists($name, $this->namedRoutes)) {
+                throw new RouterException("Route name already taken $name");
+            }
             $this->namedRoutes[$name] = $route;
         }
         return $route;
