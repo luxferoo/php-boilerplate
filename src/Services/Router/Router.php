@@ -83,7 +83,7 @@ class Router extends EventEmitter
         return $this->add($path, $callback, self::DELETE, $name);
     }
 
-    public function add(String $path, $callback, String $method, String $name = null): Route
+    private function add(String $path, $callback, String $method, String $name = null): Route
     {
         $route = new Route($path, $callback);
         $this->routes[$method][] = $route;
