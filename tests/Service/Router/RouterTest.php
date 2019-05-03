@@ -2,9 +2,9 @@
 
 namespace tests\Services\Router;
 
-use App\Services\Router\Route;
-use App\Services\Router\Router;
-use App\Services\Router\RouterException;
+use App\Service\Router\Route;
+use App\Service\Router\Router;
+use App\Service\Router\RouterException;
 use PHPUnit\Framework\TestCase;
 
 class RouterTest extends TestCase

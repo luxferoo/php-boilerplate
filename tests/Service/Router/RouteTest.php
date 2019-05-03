@@ -1,9 +1,9 @@
 <?php
 
 
-namespace tests\Services\Router;
+namespace tests\Service\Router;
 
-use App\Services\Router\Route;
+use App\Service\Router\Route;
 use PHPUnit\Framework\TestCase;
 
 class RouteTest extends TestCase

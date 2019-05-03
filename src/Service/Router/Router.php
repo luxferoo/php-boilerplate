@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\Router;
+namespace App\Service\Router;
 
-use App\Helpers\EventEmitter;
+use App\Helper\EventEmitter;
 
 class Router extends EventEmitter
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace tests\Helpers;
+namespace tests\Helper;
 
 
 use PHPUnit\Framework\TestCase;
-use App\Helpers\EventEmitter;
+use App\Helper\EventEmitter;
 
 class EventEmitterTest extends TestCase
 {
@@ -26,8 +26,12 @@ class EventEmitterTest extends TestCase
     {
         $data = "";
         $eventEmitter = new EventEmitter();
-        $eventEmitter->once("EVENT_1", function () use (&$data) {$data = "imam";});
-        $eventEmitter->once("EVENT_1", function () use (&$data) {$data = "harir";});
+        $eventEmitter->once("EVENT_1", function () use (&$data) {
+            $data = "imam";
+        });
+        $eventEmitter->once("EVENT_1", function () use (&$data) {
+            $data = "harir";
+        });
         $eventEmitter->emit("EVENT_1", $eventEmitter);
         $this->assertSame($data, "imam");
     }
@@ -35,9 +39,13 @@ class EventEmitterTest extends TestCase
     public function testDetach()
     {
         $data = "";
-        $imamCb = function () use (&$data) {$data = "imam";};
+        $imamCb = function () use (&$data) {
+            $data = "imam";
+        };
         $eventEmitter = new EventEmitter();
-        $eventEmitter->on("EVENT_1", function () use (&$data) {$data = "harir";});
+        $eventEmitter->on("EVENT_1", function () use (&$data) {
+            $data = "harir";
+        });
         $eventEmitter->on("EVENT_1", $imamCb);
         $eventEmitter->detach("EVENT_1", $imamCb);
         $eventEmitter->emit("EVENT_1", $eventEmitter);
@@ -47,7 +55,9 @@ class EventEmitterTest extends TestCase
     public function testDetachOnce()
     {
         $data = "";
-        $imamCb = function () use (&$data) {$data = "imam";};
+        $imamCb = function () use (&$data) {
+            $data = "imam";
+        };
         $eventEmitter = new EventEmitter();
         $eventEmitter->once("EVENT_1", $imamCb);
         $eventEmitter->detach("EVENT_1", $imamCb);
@@ -58,7 +68,9 @@ class EventEmitterTest extends TestCase
     public function testDetachOnceAll()
     {
         $data = "";
-        $imamCb = function () use (&$data) {$data = "imam";};
+        $imamCb = function () use (&$data) {
+            $data = "imam";
+        };
         $eventEmitter = new EventEmitter();
         $eventEmitter->on("EVENT_1", $imamCb);
         $eventEmitter->once("EVENT_1", $imamCb);
@@ -74,7 +86,9 @@ class EventEmitterTest extends TestCase
             $data = "imam";
         };
         $eventEmitter = new EventEmitter();
-        $eventEmitter->on("EVENT_1", function () use (&$data) {$data = "harir";});
+        $eventEmitter->on("EVENT_1", function () use (&$data) {
+            $data = "harir";
+        });
         $eventEmitter->on("EVENT_1", $imamCb);
         $eventEmitter->detachAll("EVENT_1");
         $eventEmitter->emit("EVENT_1", $eventEmitter);

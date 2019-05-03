@@ -26,6 +26,7 @@ class IoC
             throw new IoCException("Service $name already exist.");
         }
         $this->services[$name] = $callback;
+        return $this;
     }
 
     public function getService(String $name)

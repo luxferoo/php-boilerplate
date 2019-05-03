@@ -1,12 +1,11 @@
 <?php
 declare(strict_types=1);
 ini_set('display_errors', "1");
-
 require '../vendor/autoload.php';
 require '../src/IoC/initIoC.php';
 
 use App\IOC\IoC;
-use App\Services\Router\Router;
+use App\Service\Router\Router;
 
 $container = IoC::getInstance();
 /** @var Router $router */
@@ -18,7 +17,6 @@ $method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : null;
 if (!isset($method)) {
 
 } else {
-    /* books */
     $router->get('/', function () {
         return "home";
     });
@@ -26,6 +24,10 @@ if (!isset($method)) {
     $router->get('/books', function () {
         return "all books";
     });
+
+    $router->get('/authors', "Author#index");
+
+    $router->get('/authors/:id', "Author#show");
 
     $router->get('/books/:id-:slug', function ($id, $slug) use ($router) {
         return $id . ' ' . $slug;
@@ -42,8 +44,6 @@ if (!isset($method)) {
     $router->post('/books/:id', function ($id) {
         return $id;
     });
-    /* books */
-
     try {
         $router->run($url, $method);
     } catch (Exception $exception) {
