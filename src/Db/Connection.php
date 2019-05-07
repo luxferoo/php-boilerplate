@@ -15,16 +15,16 @@ class Connection
     {
         switch ($env) {
             case self::DEV_ENV:
-                $this->con = new \PDO('mysql:host=localhost;dbname=testdb;charset=utf8mb4', 'root', 'password');
+                $this->con = new \PDO('pgsql:host=localhost;dbname=testdb;', 'postgres', 'password');
                 break;
             case self::TEST_ENV:
-                $this->con = new \PDO('mysql:host=localhost;dbname=testdb;charset=utf8mb4', 'root', 'password');
+                $this->con = new \PDO('pgsql:host=localhost;dbname=testdb;', 'postgres', 'password');
                 break;
             case self::PROD_ENV:
-                $this->con = new \PDO('mysql:host=localhost;dbname=testdb;charset=utf8mb4', 'root', 'password');
+                $this->con = new \PDO('pgsql:host=localhost;dbname=testdb;', 'postgres', 'password');
                 break;
             default:
-                $this->con = new \PDO('mysql:host=localhost;dbname=testdb;charset=utf8mb4', 'root', 'password');
+                $this->con = new \PDO('pgsql:host=localhost;dbname=testdb;', 'postgres', 'password');
         }
     }
 
