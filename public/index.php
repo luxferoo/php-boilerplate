@@ -9,7 +9,7 @@ require '../config/routes/aggregator.php';
 $url = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : "";
 $method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : null;
 
-if (isset($method)) {
+if (is_string($method) && !empty($method)) {
     try {
         initRoutes($url, $method);
     } catch (Exception $exception) {
