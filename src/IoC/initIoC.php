@@ -5,9 +5,7 @@ use App\Service\Router\Router;
 use App\Db\Connection;
 use App\Repository\Factory;
 
-$IoC = IoC::getInstance();
-$con = Connection::getInstance("dev");
-$IoC
+IoC::getInstance()
     ->register("router", function () {
         $router = Router::getInstance();
         return $router
@@ -26,9 +24,9 @@ $IoC
                 echo $router->getResponse();
             });
     })
-    ->register("db", function () use ($con) {
-        return $con;
+    ->register("db", function () {
+        return Connection::getInstance("dev");
     })
-    ->register("repository.factory", function () use ($con) {
-        return new Factory($con->getConnection());
+    ->register("repository.factory", function () {
+        return new Factory(Connection::getInstance("dev")->getConnection());
     });
