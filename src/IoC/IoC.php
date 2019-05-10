@@ -2,23 +2,13 @@
 
 namespace App\IoC;
 
+use App\Helper\Singleton;
 
 class IoC
 {
+    use Singleton;
+
     private $services = [];
-    private static $instance;
-
-    private function __construct(){}
-
-    public static function getInstance()
-    {
-        if (self::$instance instanceof IoC) {
-            return self::$instance;
-        } else {
-            self::$instance = new IoC();
-            return self::$instance;
-        }
-    }
 
     public function register(String $name, \Closure $callback)
     {
@@ -36,5 +26,4 @@ class IoC
         }
         return $this->services[$name]();
     }
-
 }

@@ -3,7 +3,6 @@
 
 namespace tests\IoC;
 
-
 use App\IoC\IoCException;
 use PHPUnit\Framework\TestCase;
 use App\IoC\IoC;

@@ -2,7 +2,6 @@
 
 namespace tests\Helper;
 
-
 use PHPUnit\Framework\TestCase;
 use App\Helper\EventEmitter;
 

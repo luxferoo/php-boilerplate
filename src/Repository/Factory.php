@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-
 class Factory
 {
     private $con;

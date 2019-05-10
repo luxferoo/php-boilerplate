@@ -2,7 +2,6 @@
 
 namespace App\Model;
 
-
 class Author
 {
     use ModelTrait;

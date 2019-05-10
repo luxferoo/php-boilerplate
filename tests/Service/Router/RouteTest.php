@@ -43,11 +43,11 @@ class RouteTest extends TestCase
 
     public function testCall()
     {
-        $this->assertSame("my-book 1",self::$route->call());
+        $this->assertSame("my-book 1", self::$route->call());
     }
 
     public function testGetMatches()
     {
-        $this->assertSame(self::$route->getMatches(),["my-book","1"]);
+        $this->assertSame(self::$route->getMatches(), ["my-book","1"]);
     }
 }

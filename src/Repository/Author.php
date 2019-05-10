@@ -6,7 +6,7 @@ class Author extends Repository
 {
     private $table = "author";
 
-    function getModel()
+    public function getModel()
     {
         return \App\Model\Author::class;
     }

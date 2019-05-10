@@ -3,7 +3,6 @@
 use App\IOC\IoC;
 use App\Service\Router\Router;
 
-
 function initRoutes(String $url, String $method)
 {
     /** @var IoC $container */

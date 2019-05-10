@@ -3,15 +3,17 @@
 namespace App\Service\Router;
 
 use App\Helper\EventEmitter;
+use App\Helper\Singleton;
 
 class Router extends EventEmitter
 {
+    use Singleton;
+
     private $routes = [];
     private $namedRoutes = [];
     private $proxies = [];
     private $response;
     private $url;
-    private static $instance;
     const GET = "GET";
     const POST = "POST";
     const PUT = "PUT";
@@ -20,20 +22,6 @@ class Router extends EventEmitter
     const ROUTER_ROUTE_NOT_FOUND_EVENT = "router.route.not.found";
     const ROUTER_RESPONSE_EVENT = "router.response";
     const ROUTER_RESPONSE_ERROR_EVENT = "router.response.error";
-
-    private function __construct()
-    {
-    }
-
-    public static function getInstance()
-    {
-        if (self::$instance instanceof Router) {
-            return self::$instance;
-        } else {
-            self::$instance = new Router();
-            return self::$instance;
-        }
-    }
 
     public function run(String $url, String $method)
     {

@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-
 class Book
 {
     use Controller;

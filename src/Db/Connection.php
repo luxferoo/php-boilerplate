@@ -2,7 +2,6 @@
 
 namespace App\Db;
 
-
 class Connection
 {
     private static $instance;

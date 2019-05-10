@@ -25,5 +25,5 @@ abstract class Repository
         return (new $class())->setId($id);
     }
 
-    abstract function getModel();
+    abstract public function getModel();
 }

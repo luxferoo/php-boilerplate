@@ -64,11 +64,13 @@ class Route
         return $path;
     }
 
-    public function getMatches(){
+    public function getMatches()
+    {
         return $this->matches;
     }
 
-    public function setMatches(array $matches){
+    public function setMatches(array $matches)
+    {
         $this->matches = $matches;
         return $this;
     }

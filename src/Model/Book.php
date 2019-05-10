@@ -2,7 +2,6 @@
 
 namespace App\Model;
 
-
 class Book
 {
     use ModelTrait;
@@ -45,5 +44,4 @@ class Book
         $this->name = $name;
         return $this;
     }
-
 }

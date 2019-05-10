@@ -4,7 +4,6 @@ namespace App\Helper;
 
 class EventEmitter
 {
-
     protected $events = [];
     protected $eventsOnce = [];
 
