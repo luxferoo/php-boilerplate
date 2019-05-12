@@ -7,7 +7,11 @@ use App\Repository\Factory;
 
 IoC::getInstance()
     ->register("router", function () {
-        $router = Router::getInstance();
+        static $router;
+        if($router instanceof Router) {
+            return $router;
+        }
+        $router = new Router();
         return $router
             ->once(Router::ROUTER_REQUEST_EVENT, function (Router $router) {
                 // LOG THIS SHIT $router->getRequestedUrl() . PHP_EOL;

@@ -2,11 +2,20 @@
 
 namespace App\IoC;
 
-use App\Helper\Singleton;
-
 class IoC
 {
-    use Singleton;
+    private function __construct()
+    {
+    }
+
+    public static function getInstance()
+    {
+        static $instance = null;
+        if (null === $instance) {
+            $instance = new static;
+        }
+        return $instance;
+    }
 
     private $services = [];
 

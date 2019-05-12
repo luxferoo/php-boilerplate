@@ -3,12 +3,9 @@
 namespace App\Service\Router;
 
 use App\Helper\EventEmitter;
-use App\Helper\Singleton;
 
 class Router extends EventEmitter
 {
-    use Singleton;
-
     private $routes = [];
     private $namedRoutes = [];
     private $proxies = [];
