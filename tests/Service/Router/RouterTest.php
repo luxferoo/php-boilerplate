@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\Services\Router;
+namespace tests\Service\Router;
 
 use App\Service\Router\Route;
 use App\Service\Router\Router;
@@ -16,7 +16,7 @@ class RouterTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        self::$router = Router::getInstance();
+        self::$router = new Router();
     }
 
     public function testGet()
