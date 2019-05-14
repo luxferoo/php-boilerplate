@@ -29,10 +29,14 @@ IoC::getInstance()
             });
     })
     ->register("db", function () {
-        $connection = Connection::getInstance();
+        static $connection;
+        if($connection instanceof Connection) {
+            return $connection;
+        }
+        $connection = new Connection();
         $connection->init("pgsql:host=localhost;dbname=testdb;","postgres","password");
-        return Connection::getInstance();
+        return $connection;
     })
     ->register("repository.factory", function () {
-        return new Factory(Connection::getInstance()->getConnection());
+        return new Factory(IoC::getInstance()->getService("db")->getConnection());
     });
