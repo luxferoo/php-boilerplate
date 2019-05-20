@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 ini_set('display_errors', "1");
+define('PROJECT_ROOT', dirname(dirname(__FILE__)));
 
 require '../vendor/autoload.php';
 require '../src/IoC/initIoC.php';

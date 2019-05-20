@@ -1,10 +1,10 @@
 <?php
 
-namespace tests\Db;
+namespace tests\Service\Db;
 
 
-use App\Db\Connection;
-use App\Db\DatabaseConnectionException;
+use App\Service\Db\Connection;
+use App\Service\Db\DatabaseConnectionException;
 use PHPUnit\Framework\TestCase;
 
 class ConnectionTest extends TestCase

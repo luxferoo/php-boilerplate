@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Db;
+namespace App\Service\Db;
 
 
 class DatabaseConnectionException extends \Exception
