@@ -18,7 +18,8 @@ $router->get('/books/:id-:slug', function ($id, $slug) use ($router) {
     ->constraint('id', '[0-9]+')
     ->constraint('slug', '[a-z\-0-9]+');
 
-$router->get('/books/:id', "Book#show");
+$router->get('/books/:id', "Book#show")
+    ->constraint('id', '[0-9]+');
 
 $router->get('/books/:id/author/dogs/:dog', function ($id, $dog) {
     echo "author for " . $id . " " . $dog;
